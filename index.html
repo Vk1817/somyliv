@@ -29,8 +29,6 @@ height:100vh;
 overflow:hidden;
 }
 
-/* HEADER */
-
 header{
 padding:12px 20px;
 background:#0f172a;
@@ -44,11 +42,6 @@ align-items:center;
 font-weight:900;
 font-size:18px;
 color:var(--accent);
-}
-
-.header-buttons{
-display:flex;
-gap:10px;
 }
 
 .btn{
@@ -68,15 +61,11 @@ background:var(--accent);
 color:black;
 }
 
-/* MAIN LAYOUT */
-
 .main{
 display:flex;
 flex:1;
 overflow:hidden;
 }
-
-/* PLAYER */
 
 #video-section{
 flex:3;
@@ -116,8 +105,6 @@ background:var(--accent);
 color:black;
 border-color:var(--accent);
 }
-
-/* SIDEBAR */
 
 .sidebar{
 flex:1;
@@ -170,8 +157,6 @@ border-left:4px solid var(--accent);
 background:#0f172a;
 }
 
-/* BADGES */
-
 .badge{
 font-size:9px;
 padding:2px 6px;
@@ -189,8 +174,6 @@ background:#ef4444;
 .badge-up{
 background:#475569;
 }
-
-/* TELEGRAM POPUP */
 
 .popup{
 position:fixed;
@@ -245,8 +228,6 @@ cursor:pointer;
 color:#94a3b8;
 }
 
-/* FLOATING INSTAGRAM BUTTON */
-
 .insta-float{
 position:fixed;
 bottom:20px;
@@ -272,8 +253,6 @@ width:26px;
 height:26px;
 }
 
-/* RESPONSIVE */
-
 @media(max-width:850px){
 .main{flex-direction:column}
 #video-section{height:40vh}
@@ -287,9 +266,7 @@ height:26px;
 
 <header>
 <div class="brand">CricKCast</div>
-<div class="header-buttons">
 <button class="btn" onclick="showPopup()">Telegram</button>
-</div>
 </header>
 
 <div class="main">
@@ -304,15 +281,11 @@ height:26px;
 </div>
 
 <div class="sidebar">
-<h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:1px;">
-Live & Upcoming
-</h3>
+<h3 style="font-size:12px;color:#64748b;text-transform:uppercase;">Live & Upcoming</h3>
 <div id="match-list"></div>
 </div>
 
 </div>
-
-<!-- TELEGRAM POPUP -->
 
 <div id="telegramPopup" class="popup">
 <div class="popup-box">
@@ -326,8 +299,6 @@ Join Channel
 <div class="popup-close" onclick="hidePopup()">Maybe Later</div>
 </div>
 </div>
-
-<!-- FLOATING INSTAGRAM BUTTON -->
 
 <a href="https://www.instagram.com/crickcast.live?igsh=MTZ3ZmtqdDZwdHYzbA==" target="_blank" class="insta-float">
 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
@@ -348,17 +319,13 @@ if(hlsInstance)hlsInstance.destroy();
 if(Hls.isSupported()){
 
 hlsInstance=new Hls();
-
 hlsInstance.loadSource(url);
-
 hlsInstance.attachMedia(video);
 
 hlsInstance.on(Hls.Events.MANIFEST_PARSED,function(){
 
 if(!plyrInstance){
-
 plyrInstance=new Plyr(video);
-
 }
 
 });
@@ -366,11 +333,8 @@ plyrInstance=new Plyr(video);
 }
 
 else if(video.canPlayType('application/vnd.apple.mpegurl')){
-
 video.src=url;
-
 if(!plyrInstance)plyrInstance=new Plyr(video);
-
 }
 
 }
@@ -378,25 +342,18 @@ if(!plyrInstance)plyrInstance=new Plyr(video);
 function setupLangs(streams){
 
 const bar=document.getElementById('lang-options');
-
 bar.innerHTML="";
 
 streams.forEach((s,i)=>{
 
 const btn=document.createElement('button');
-
 btn.className="lang-btn";
-
 btn.innerText=s.lang;
 
 btn.onclick=()=>{
-
 document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-
 btn.classList.add('active');
-
 initPlayer(s.url);
-
 };
 
 bar.appendChild(btn);
@@ -409,68 +366,66 @@ if(i===0)btn.click();
 
 async function loadData(){
 
-const res=await fetch(workerUrl+"?t="+Date.now());
+try{
 
-const data=await res.json();
+const res = await fetch(workerUrl + "?t=" + Date.now());
+const json = await res.json();
+
+const matches = json.matches || json.data?.matches || [];
 
 const groups={};
 
-data.matches.forEach(m=>{
+matches.forEach(m=>{
 
-let base=(m.match_name||m.event_name||"Match").split(' [')[0];
+let base = (m.match_name || m.event_name || "Match").split(' [')[0];
 
-let lang=(m.match_name.match(/\[([A-Z]{2,3})\]/)||[])[1]||"LIVE";
+let lang="LIVE";
 
-if(!groups[base]){
-
-groups[base]={name:base,event:m.event_name,thumb:m.src,isLive:false,streams:[]};
-
+if(m.match_name){
+const match = m.match_name.match(/\[([A-Z]{2,3})\]/);
+if(match) lang=match[1];
 }
 
-if(m.dai_url){
+if(!groups[base]){
+groups[base]={
+name:base,
+event:m.event_name,
+thumb:m.src || m.thumbnail || "",
+isLive:false,
+streams:[]
+};
+}
 
+if(m.dai_url && m.dai_url.startsWith("http")){
 groups[base].streams.push({lang:lang,url:m.dai_url});
-
 groups[base].isLive=true;
-
 }
 
 });
 
 const list=document.getElementById("match-list");
-
 list.innerHTML="";
 
 Object.values(groups).forEach((g,i)=>{
 
 const card=document.createElement("div");
-
 card.className="card";
 
 card.innerHTML=`
-
 <img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55/1e293b/white?text=LIVE'">
-
 <div class="card-info">
-
 <h4>${g.name}</h4>
-
-<p>${g.event||'Sports'}</p>
-
-<span class="badge ${g.isLive?'badge-live':'badge-up'}">${g.isLive?'Live':'Upcoming'}</span>
-
+<p>${g.event || "Sports"}</p>
+<span class="badge ${g.isLive?'badge-live':'badge-up'}">
+${g.isLive?'Live':'Upcoming'}
+</span>
 </div>
-
 `;
 
 card.onclick=()=>{
-
 document.querySelectorAll('.card').forEach(c=>c.classList.remove('active-card'));
-
 card.classList.add('active-card');
-
 setupLangs(g.streams);
-
 };
 
 list.appendChild(card);
@@ -479,23 +434,25 @@ if(i===0)card.click();
 
 });
 
+}catch(e){
+console.error("JSON error",e);
+}
+
 }
 
 function showPopup(){
-
 document.getElementById("telegramPopup").classList.add("show");
-
 }
 
 function hidePopup(){
-
 document.getElementById("telegramPopup").classList.remove("show");
-
 }
 
 setTimeout(showPopup,6000);
 
 window.onload=loadData;
+
+setInterval(loadData,120000);
 
 </script>
 
