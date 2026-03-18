@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>CricKCast Live</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
@@ -90,8 +89,6 @@ font-size:16px;
 line-height:1.3;
 word-break:break-word;
 }
-
-/* SCORE */
 
 .score{
 font-size:13px;
@@ -255,148 +252,6 @@ box-shadow:0 6px 20px rgba(0,0,0,.4);
 width:26px;
 }
 
-/* MOBILE */
-
-@media(max-width:850px){
-
-.main{
-flex-direction:column;
-}
-
-.sidebar{
-max-width:100%;
-border-left:none;
-height:38vh;
-}
-
-.match-banner{
-height:80px;
-}
-
-.plyr{
-max-height:38vh;
-}
-
-}
-
-  /* MATCH CARD UI */
-
-.match-card{
-background:linear-gradient(180deg,#071224,#020617);
-border-radius:22px;
-overflow:hidden;
-border:1px solid rgba(56,189,248,.25);
-box-shadow:0 10px 40px rgba(0,0,0,.6);
-margin-bottom:25px;
-}
-
-.match-banner-img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
-
-.live-pill{
-position:absolute;
-top:15px;
-left:15px;
-background:#ff2d2d;
-color:white;
-font-weight:700;
-font-size:12px;
-padding:6px 14px;
-border-radius:30px;
-display:flex;
-align-items:center;
-gap:6px;
-box-shadow:0 0 10px rgba(255,0,0,.6);
-}
-
-.live-dot{
-width:8px;
-height:8px;
-background:white;
-border-radius:50%;
-animation:pulse 1.4s infinite;
-}
-
-@keyframes pulse{
-0%{opacity:1}
-50%{opacity:.4}
-100%{opacity:1}
-}
-
-.match-content{
-padding:20px;
-}
-
-.tournament{
-font-size:11px;
-letter-spacing:1px;
-color:#94a3b8;
-margin-bottom:8px;
-text-transform:uppercase;
-}
-
-.match-title{
-font-size:20px;
-font-weight:800;
-line-height:1.3;
-margin-bottom:16px;
-}
-
-.team-row{
-display:flex;
-gap:20px;
-margin-bottom:14px;
-align-items:center;
-}
-
-.team{
-display:flex;
-align-items:center;
-gap:8px;
-background:#071224;
-border-radius:40px;
-padding:6px 12px;
-font-size:13px;
-}
-
-.team img{
-width:24px;
-height:24px;
-border-radius:50%;
-}
-
-.lang-pill{
-margin-left:auto;
-border:1px solid #94a3b8;
-padding:6px 16px;
-border-radius:30px;
-font-size:13px;
-}
-
-.match-meta{
-font-size:12px;
-color:#94a3b8;
-margin-bottom:18px;
-}
-
-.watch-btn{
-display:block;
-width:100%;
-text-align:center;
-padding:14px;
-background:linear-gradient(90deg,#2563eb,#1d4ed8);
-border-radius:40px;
-font-weight:800;
-font-size:15px;
-letter-spacing:.5px;
-text-decoration:none;
-color:white;
-box-shadow:0 6px 25px rgba(37,99,235,.5);
-}
-
 </style>
 </head>
 
@@ -407,13 +262,9 @@ box-shadow:0 6px 25px rgba(37,99,235,.5);
 <div class="match-banner">
 <img id="bannerImg" src="">
 <div class="banner-content">
-
 <div id="liveBadge" class="live-badge">LIVE</div>
-
 <div class="teams" id="teamNames">Match Loading...</div>
-
 <div class="score" id="scoreText"></div>
-
 </div>
 </div>
 
@@ -486,9 +337,7 @@ if(hlsInstance)hlsInstance.destroy()
 if(Hls.isSupported()){
 
 hlsInstance=new Hls()
-
 hlsInstance.loadSource(url)
-
 hlsInstance.attachMedia(video)
 
 hlsInstance.on(Hls.Events.MANIFEST_PARSED,function(){
@@ -509,15 +358,12 @@ if(!plyrInstance) plyrInstance=new Plyr(video)
 function setupLangs(streams){
 
 const bar=document.getElementById("lang-options")
-
 bar.innerHTML=""
 
 streams.forEach((s,i)=>{
 
 const btn=document.createElement("button")
-
 btn.className="lang-btn"
-
 btn.innerText=s.lang
 
 btn.onclick=()=>{
@@ -541,7 +387,6 @@ if(i===0)btn.click()
 async function loadData(){
 
 const res=await fetch(workerUrl+"?t="+Date.now())
-
 const json=await res.json()
 
 const matches=json.matches||json.data?.matches||[]
@@ -555,109 +400,45 @@ let base=(m.match_name||m.event_name||"Match").split(" [")[0]
 let lang="LIVE"
 
 if(m.match_name){
-
 const match=m.match_name.match(/\[([A-Z]{2,3})\]/)
-
 if(match) lang=match[1]
-
 }
 
 if(!groups[base]){
-
 groups[base]={
-
 name:base,
 event:m.event_name,
 thumb:m.src||"",
 streams:[],
 isLive:false
-
 }
-
 }
 
 if(m.dai_url && m.dai_url.includes("m3u8")){
-
 groups[base].streams.push({
-
 lang:lang,
 url:m.dai_url
-
 })
-
 groups[base].isLive=true
-
 }
 
 })
 
 const list=document.getElementById("match-list")
-
 list.innerHTML=""
 
 Object.values(groups).forEach((g,i)=>{
 
 const card=document.createElement("div")
-
 card.className="card"
 
-card.innerHTML = `
-
-<div class="match-card">
-
-<div style="position:relative">
-
-<img src="${match.banner}" class="match-banner-img">
-
-<div class="live-pill">
-<div class="live-dot"></div>
-LIVE
+card.innerHTML=`
+<img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55'">
+<div class="card-info">
+<h4>${g.name}</h4>
+<p>${g.event||"Sports"}</p>
 </div>
-
-</div>
-
-<div class="match-content">
-
-<div class="tournament">
-${match.tournament || "Sports Event"}
-</div>
-
-<div class="match-title">
-${match.match_name}
-</div>
-
-<div class="team-row">
-
-<div class="team">
-<img src="${match.team1_logo || 'https://placehold.co/30'}">
-${match.team1 || "Team A"}
-</div>
-
-<div class="team">
-<img src="${match.team2_logo || 'https://placehold.co/30'}">
-${match.team2 || "Team B"}
-</div>
-
-<div class="lang-pill">
-English
-</div>
-
-</div>
-
-<div class="match-meta">
-📅 ${match.date || "Live Now"} &nbsp;&nbsp; ⚽ Football
-</div>
-
-<a href="player.html?url=${encodeURIComponent(streamUrl)}"
-class="watch-btn">
-▶ WATCH LIVE
-</a>
-
-</div>
-
-</div>
-
-`;`
+`
 
 card.onclick=()=>{
 
@@ -668,10 +449,12 @@ card.classList.add("active-card")
 document.getElementById("teamNames").innerText=g.name
 document.getElementById("bannerImg").src=g.thumb
 
-document.getElementById("liveBadge").style.display =
-g.isLive ? "inline-block" : "none"
+document.getElementById("liveBadge").style.display=
+g.isLive?"inline-block":"none"
 
+if(g.streams.length){
 setupLangs(g.streams)
+}
 
 }
 
@@ -684,15 +467,11 @@ if(i===0)card.click()
 }
 
 function showPopup(){
-
 document.getElementById("telegramPopup").classList.add("show")
-
 }
 
 function hidePopup(){
-
 document.getElementById("telegramPopup").classList.remove("show")
-
 }
 
 setTimeout(showPopup,6000)
