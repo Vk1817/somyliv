@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CricKCast Live</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
@@ -20,46 +21,83 @@
 
 body{
 margin:0;
-background:linear-gradient(135deg,#020617,#020617,#0f172a);
+background:var(--bg);
 color:white;
 font-family:Inter,Arial;
+height:100vh;
 display:flex;
 flex-direction:column;
-height:100vh;
 overflow:hidden;
 }
 
+/* HEADER */
+
 header{
-padding:12px 20px;
-background:#0f172a;
-border-bottom:1px solid var(--border);
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.brand{
+background:linear-gradient(90deg,#020617,#0f172a,#020617);
+padding:14px;
+text-align:center;
 font-weight:900;
+font-size:22px;
+letter-spacing:1px;
+color:#38bdf8;
+text-shadow:0 0 20px rgba(56,189,248,0.6);
+border-bottom:1px solid var(--border);
+}
+
+/* MATCH BANNER */
+
+.match-banner{
+position:relative;
+height:120px;
+background:#000;
+overflow:hidden;
+}
+
+.match-banner img{
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:.6;
+}
+
+.banner-content{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+.live-badge{
+display:inline-block;
+background:#ef4444;
+font-size:11px;
+padding:3px 8px;
+border-radius:4px;
+margin-bottom:6px;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{opacity:1}
+50%{opacity:.5}
+100%{opacity:1}
+}
+
+.teams{
+font-weight:800;
 font-size:18px;
-color:var(--accent);
 }
 
-.btn{
-padding:6px 14px;
-font-size:12px;
-border-radius:6px;
-font-weight:600;
-cursor:pointer;
-border:1px solid var(--border);
-background:#1e293b;
-color:white;
-transition:.3s;
+/* SCORE */
+
+.score{
+font-size:13px;
+color:#94a3b8;
+margin-top:4px;
 }
 
-.btn:hover{
-background:var(--accent);
-color:black;
-}
+/* MAIN */
 
 .main{
 display:flex;
@@ -67,17 +105,20 @@ flex:1;
 overflow:hidden;
 }
 
+/* PLAYER */
+
 #video-section{
 flex:3;
-background:#000;
 display:flex;
 flex-direction:column;
+background:black;
 }
 
 .plyr{
 height:100%;
-width:100%;
 }
+
+/* AUDIO BAR */
 
 #language-bar{
 background:#0f172a;
@@ -91,27 +132,26 @@ border-top:1px solid var(--border);
 .lang-btn{
 background:#1e293b;
 border:1px solid var(--border);
-color:white;
 padding:6px 14px;
 border-radius:6px;
-cursor:pointer;
 font-size:12px;
-font-weight:600;
-transition:.3s;
+cursor:pointer;
+color:white;
 }
 
 .lang-btn.active{
-background:var(--accent);
+background:#38bdf8;
 color:black;
-border-color:var(--accent);
 }
+
+/* SIDEBAR */
 
 .sidebar{
 flex:1;
-max-width:380px;
-background:#020617;
-border-left:1px solid var(--border);
+max-width:360px;
 overflow-y:auto;
+border-left:1px solid var(--border);
+background:#020617;
 padding:15px;
 }
 
@@ -120,25 +160,22 @@ background:#0f172a;
 border:1px solid var(--border);
 border-radius:10px;
 padding:10px;
-margin-bottom:12px;
-cursor:pointer;
 display:flex;
 gap:12px;
+margin-bottom:12px;
+cursor:pointer;
 transition:.25s;
 }
 
 .card:hover{
-transform:translateY(-3px);
-border-color:var(--accent);
-box-shadow:0 4px 20px rgba(56,189,248,.2);
+border-color:#38bdf8;
 }
 
 .card img{
 width:90px;
 height:55px;
-border-radius:6px;
 object-fit:cover;
-background:#334155;
+border-radius:6px;
 }
 
 .card-info h4{
@@ -153,27 +190,10 @@ color:#94a3b8;
 }
 
 .active-card{
-border-left:4px solid var(--accent);
-background:#0f172a;
+border-left:4px solid #38bdf8;
 }
 
-.badge{
-font-size:9px;
-padding:2px 6px;
-border-radius:3px;
-font-weight:bold;
-text-transform:uppercase;
-margin-top:5px;
-display:inline-block;
-}
-
-.badge-live{
-background:#ef4444;
-}
-
-.badge-up{
-background:#475569;
-}
+/* TELEGRAM POPUP */
 
 .popup{
 position:fixed;
@@ -198,35 +218,22 @@ opacity:1;
 
 .popup-box{
 background:#0f172a;
-border-radius:14px;
 padding:30px;
+border-radius:12px;
 text-align:center;
 border:1px solid var(--border);
-max-width:320px;
-}
-
-.popup-box h3{
-margin-top:0;
-color:var(--accent);
 }
 
 .popup-box a{
-display:inline-block;
-margin-top:10px;
-background:var(--accent);
+background:#38bdf8;
 color:black;
 padding:8px 16px;
 border-radius:6px;
-font-weight:700;
 text-decoration:none;
+font-weight:bold;
 }
 
-.popup-close{
-margin-top:10px;
-font-size:12px;
-cursor:pointer;
-color:#94a3b8;
-}
+/* INSTAGRAM FLOAT */
 
 .insta-float{
 position:fixed;
@@ -234,29 +241,36 @@ bottom:20px;
 right:20px;
 width:55px;
 height:55px;
-border-radius:50%;
 background:#e1306c;
+border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
 box-shadow:0 6px 20px rgba(0,0,0,.4);
-z-index:9999;
-transition:.3s;
-}
-
-.insta-float:hover{
-transform:scale(1.1);
 }
 
 .insta-float img{
 width:26px;
-height:26px;
 }
 
+/* MOBILE */
+
 @media(max-width:850px){
-.main{flex-direction:column}
-#video-section{height:40vh}
-.sidebar{max-width:100%;border-left:none}
+
+.main{
+flex-direction:column;
+}
+
+.sidebar{
+max-width:100%;
+border-left:none;
+height:40vh;
+}
+
+.match-banner{
+height:90px;
+}
+
 }
 
 </style>
@@ -264,195 +278,252 @@ height:26px;
 
 <body>
 
-<header>
-<div class="brand">CricKCast</div>
-<button class="btn" onclick="showPopup()">Telegram</button>
-</header>
+<header>CRICKCAST</header>
+
+<!-- MATCH BANNER -->
+
+<div class="match-banner" id="banner">
+<img id="bannerImg" src="">
+<div class="banner-content">
+<div class="live-badge">LIVE</div>
+<div class="teams" id="teamNames">Match Loading...</div>
+<div class="score" id="scoreText"></div>
+</div>
+</div>
 
 <div class="main">
 
 <div id="video-section">
+
 <video id="player" playsinline controls></video>
 
 <div id="language-bar">
-<span style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Audio:</span>
+<span style="font-size:11px;color:#94a3b8">Audio:</span>
 <div id="lang-options"></div>
 </div>
+
 </div>
 
 <div class="sidebar">
-<h3 style="font-size:12px;color:#64748b;text-transform:uppercase;">Live & Upcoming</h3>
+
+<h3 style="font-size:12px;color:#64748b;text-transform:uppercase">
+Live & Upcoming
+</h3>
+
 <div id="match-list"></div>
+
 </div>
 
 </div>
+
+<!-- TELEGRAM POPUP -->
 
 <div id="telegramPopup" class="popup">
 <div class="popup-box">
+
 <h3>Join Our Telegram</h3>
+
 <p style="font-size:13px;color:#94a3b8">
 Get instant live links & updates
 </p>
+
 <a href="https://t.me/+BMRZLxqFMctjMjU1" target="_blank">
 Join Channel
 </a>
-<div class="popup-close" onclick="hidePopup()">Maybe Later</div>
+
+<br><br>
+
+<span onclick="hidePopup()" style="cursor:pointer;color:#94a3b8">
+Maybe Later
+</span>
+
 </div>
 </div>
 
-<a href="https://www.instagram.com/crickcast.live?igsh=MTZ3ZmtqdDZwdHYzbA==" target="_blank" class="insta-float">
+<a href="https://www.instagram.com/crickcast.live" target="_blank" class="insta-float">
 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
 </a>
 
 <script>
 
-const workerUrl="https://sonyli.akcoder777.workers.dev";
-const video=document.getElementById("player");
+const workerUrl="https://sonyli.akcoder777.workers.dev"
 
-let plyrInstance=null;
-let hlsInstance=null;
+const video=document.getElementById("player")
+
+let plyrInstance=null
+let hlsInstance=null
 
 function initPlayer(url){
 
-if(hlsInstance)hlsInstance.destroy();
+if(hlsInstance)hlsInstance.destroy()
 
 if(Hls.isSupported()){
 
-hlsInstance=new Hls();
-hlsInstance.loadSource(url);
-hlsInstance.attachMedia(video);
+hlsInstance=new Hls()
+
+hlsInstance.loadSource(url)
+
+hlsInstance.attachMedia(video)
 
 hlsInstance.on(Hls.Events.MANIFEST_PARSED,function(){
 
-if(!plyrInstance){
-plyrInstance=new Plyr(video);
-}
+if(!plyrInstance) plyrInstance=new Plyr(video)
 
-});
+})
 
-}
+}else{
 
-else if(video.canPlayType('application/vnd.apple.mpegurl')){
-video.src=url;
-if(!plyrInstance)plyrInstance=new Plyr(video);
+video.src=url
+if(!plyrInstance) plyrInstance=new Plyr(video)
+
 }
 
 }
 
 function setupLangs(streams){
 
-const bar=document.getElementById('lang-options');
-bar.innerHTML="";
+const bar=document.getElementById("lang-options")
+
+bar.innerHTML=""
 
 streams.forEach((s,i)=>{
 
-const btn=document.createElement('button');
-btn.className="lang-btn";
-btn.innerText=s.lang;
+const btn=document.createElement("button")
+
+btn.className="lang-btn"
+
+btn.innerText=s.lang
 
 btn.onclick=()=>{
-document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-initPlayer(s.url);
-};
 
-bar.appendChild(btn);
+document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"))
 
-if(i===0)btn.click();
+btn.classList.add("active")
 
-});
+initPlayer(s.url)
+
+}
+
+bar.appendChild(btn)
+
+if(i===0)btn.click()
+
+})
 
 }
 
 async function loadData(){
 
-try{
+const res=await fetch(workerUrl+"?t="+Date.now())
 
-const res = await fetch(workerUrl + "?t=" + Date.now());
-const json = await res.json();
+const json=await res.json()
 
-const matches = json.matches || json.data?.matches || [];
+const matches=json.matches||json.data?.matches||[]
 
-const groups={};
+const groups={}
 
 matches.forEach(m=>{
 
-let base = (m.match_name || m.event_name || "Match").split(' [')[0];
+let base=(m.match_name||m.event_name||"Match").split(" [")[0]
 
-let lang="LIVE";
+let lang="LIVE"
 
 if(m.match_name){
-const match = m.match_name.match(/\[([A-Z]{2,3})\]/);
-if(match) lang=match[1];
+
+const match=m.match_name.match(/\[([A-Z]{2,3})\]/)
+
+if(match) lang=match[1]
+
 }
 
 if(!groups[base]){
+
 groups[base]={
+
 name:base,
 event:m.event_name,
-thumb:m.src || m.thumbnail || "",
-isLive:false,
+thumb:m.src||"",
 streams:[]
-};
+
 }
 
-if(m.dai_url && m.dai_url.startsWith("http")){
-groups[base].streams.push({lang:lang,url:m.dai_url});
-groups[base].isLive=true;
 }
 
-});
+if(m.dai_url){
 
-const list=document.getElementById("match-list");
-list.innerHTML="";
+groups[base].streams.push({
+
+lang:lang,
+url:m.dai_url
+
+})
+
+}
+
+})
+
+const list=document.getElementById("match-list")
+
+list.innerHTML=""
 
 Object.values(groups).forEach((g,i)=>{
 
-const card=document.createElement("div");
-card.className="card";
+const card=document.createElement("div")
+
+card.className="card"
 
 card.innerHTML=`
-<img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55/1e293b/white?text=LIVE'">
+
+<img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55'">
+
 <div class="card-info">
+
 <h4>${g.name}</h4>
-<p>${g.event || "Sports"}</p>
-<span class="badge ${g.isLive?'badge-live':'badge-up'}">
-${g.isLive?'Live':'Upcoming'}
-</span>
+
+<p>${g.event||"Sports"}</p>
+
 </div>
-`;
+
+`
 
 card.onclick=()=>{
-document.querySelectorAll('.card').forEach(c=>c.classList.remove('active-card'));
-card.classList.add('active-card');
-setupLangs(g.streams);
-};
 
-list.appendChild(card);
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("active-card"))
 
-if(i===0)card.click();
+card.classList.add("active-card")
 
-});
+document.getElementById("teamNames").innerText=g.name
+document.getElementById("bannerImg").src=g.thumb
 
-}catch(e){
-console.error("JSON error",e);
+setupLangs(g.streams)
+
 }
+
+list.appendChild(card)
+
+if(i===0)card.click()
+
+})
 
 }
 
 function showPopup(){
-document.getElementById("telegramPopup").classList.add("show");
+
+document.getElementById("telegramPopup").classList.add("show")
+
 }
 
 function hidePopup(){
-document.getElementById("telegramPopup").classList.remove("show");
+
+document.getElementById("telegramPopup").classList.remove("show")
+
 }
 
-setTimeout(showPopup,6000);
+setTimeout(showPopup,6000)
 
-window.onload=loadData;
+window.onload=loadData
 
-setInterval(loadData,120000);
+setInterval(loadData,120000)
 
 </script>
 
