@@ -601,19 +601,63 @@ const card=document.createElement("div")
 
 card.className="card"
 
-card.innerHTML=`
+card.innerHTML = `
 
-<img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55'">
+<div class="match-card">
 
-<div class="card-info">
+<div style="position:relative">
 
-<h4>${g.name}</h4>
+<img src="${match.banner}" class="match-banner-img">
 
-<p>${g.event||"Sports"}</p>
+<div class="live-pill">
+<div class="live-dot"></div>
+LIVE
+</div>
 
 </div>
 
-`
+<div class="match-content">
+
+<div class="tournament">
+${match.tournament || "Sports Event"}
+</div>
+
+<div class="match-title">
+${match.match_name}
+</div>
+
+<div class="team-row">
+
+<div class="team">
+<img src="${match.team1_logo || 'https://placehold.co/30'}">
+${match.team1 || "Team A"}
+</div>
+
+<div class="team">
+<img src="${match.team2_logo || 'https://placehold.co/30'}">
+${match.team2 || "Team B"}
+</div>
+
+<div class="lang-pill">
+English
+</div>
+
+</div>
+
+<div class="match-meta">
+📅 ${match.date || "Live Now"} &nbsp;&nbsp; ⚽ Football
+</div>
+
+<a href="player.html?url=${encodeURIComponent(streamUrl)}"
+class="watch-btn">
+▶ WATCH LIVE
+</a>
+
+</div>
+
+</div>
+
+`;`
 
 card.onclick=()=>{
 
