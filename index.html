@@ -1,243 +1,165 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CricKCast Live</title>
+<title>CRICKCAST</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
 
 <style>
 
-:root{
---bg:#020617;
---card:#0f172a;
---accent:#38bdf8;
---border:rgba(255,255,255,0.1);
-}
-
 body{
 margin:0;
-background:var(--bg);
-color:white;
+background:#020617;
 font-family:Inter,Arial;
-height:100vh;
-display:flex;
-flex-direction:column;
+color:white;
 }
 
 /* HEADER */
 
-header{
-background:linear-gradient(90deg,#020617,#0f172a,#020617);
-padding:14px;
-text-align:center;
-font-weight:900;
+.header{
+display:flex;
+justify-content:center;
+padding:25px 0 10px;
+}
+
+.logo-pill{
+border:1px solid rgba(255,255,255,.3);
+border-radius:40px;
+padding:10px 25px;
+font-weight:800;
 font-size:22px;
 letter-spacing:1px;
+background:#020617;
+box-shadow:0 0 25px rgba(0,0,0,.4);
+}
+
+.logo-pill span{
 color:#38bdf8;
-text-shadow:0 0 20px rgba(56,189,248,0.6);
-border-bottom:1px solid var(--border);
-}
-
-/* MATCH BANNER */
-
-.match-banner{
-position:relative;
-height:95px;
-background:#000;
-overflow:hidden;
-}
-
-.match-banner img{
-width:100%;
-height:100%;
-object-fit:cover;
-opacity:.6;
-}
-
-.banner-content{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-text-align:center;
-width:95%;
-}
-
-.live-badge{
-display:none;
-background:#ef4444;
-font-size:11px;
-padding:3px 8px;
-border-radius:4px;
-margin-bottom:4px;
-animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-0%{opacity:1}
-50%{opacity:.5}
-100%{opacity:1}
-}
-
-.teams{
-font-weight:800;
-font-size:16px;
-line-height:1.3;
-word-break:break-word;
-}
-
-.score{
-font-size:13px;
-color:#94a3b8;
-margin-top:3px;
-}
-
-/* MAIN */
-
-.main{
-display:flex;
-flex:1;
-overflow:hidden;
 }
 
 /* PLAYER */
 
-#video-section{
-flex:3;
-background:black;
+.player-box{
+max-width:1000px;
+margin:auto;
+display:none;
+padding:10px;
 }
 
-.plyr{
+video{
 width:100%;
-height:auto;
-max-height:45vh;
+border-radius:14px;
 }
 
-/* AUDIO BAR */
+/* SECTIONS */
 
-#language-bar{
-background:#0f172a;
-padding:8px;
+.section{
+max-width:1000px;
+margin:auto;
+padding:10px;
+}
+
+.section-title{
+font-size:13px;
+letter-spacing:1px;
+color:#94a3b8;
+margin-bottom:12px;
+}
+
+/* LIVE HORIZONTAL */
+
+.live-row{
 display:flex;
-gap:10px;
-align-items:center;
-border-top:1px solid var(--border);
+gap:12px;
+overflow-x:auto;
+padding-bottom:10px;
 }
 
-.lang-btn{
-background:#1e293b;
-border:1px solid var(--border);
-padding:6px 12px;
-border-radius:6px;
-font-size:12px;
+.live-card{
+min-width:180px;
+background:#0f172a;
+border-radius:14px;
+overflow:hidden;
 cursor:pointer;
+border:1px solid rgba(255,255,255,.1);
+}
+
+.live-card img{
+width:100%;
+height:100px;
+object-fit:cover;
+}
+
+.live-tag{
+position:absolute;
+background:#ff2d2d;
 color:white;
+font-size:10px;
+padding:3px 8px;
+border-radius:20px;
+margin:8px;
+font-weight:700;
 }
 
-.lang-btn.active{
-background:#38bdf8;
-color:black;
+/* UPCOMING */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:15px;
 }
 
-/* SIDEBAR */
+.match-card{
+background:#0f172a;
+border-radius:18px;
+overflow:hidden;
+border:1px solid rgba(56,189,248,.3);
+}
 
-.sidebar{
-flex:1;
-max-width:360px;
-overflow-y:auto;
-border-left:1px solid var(--border);
-background:#020617;
+.match-card img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+.card-body{
 padding:15px;
 }
 
-.card{
-background:#0f172a;
-border:1px solid var(--border);
-border-radius:10px;
-padding:10px;
-display:flex;
-gap:12px;
-margin-bottom:12px;
-cursor:pointer;
-transition:.25s;
-}
-
-.card:hover{
-border-color:#38bdf8;
-}
-
-.card img{
-width:90px;
-height:55px;
-object-fit:cover;
-border-radius:6px;
-}
-
-.card-info h4{
-margin:0;
-font-size:13px;
-}
-
-.card-info p{
-margin:3px 0;
+.tournament{
 font-size:11px;
 color:#94a3b8;
+margin-bottom:5px;
 }
 
-.active-card{
-border-left:4px solid #38bdf8;
+.match-title{
+font-weight:800;
+font-size:16px;
+margin-bottom:12px;
 }
 
-/* TELEGRAM POPUP */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-display:flex;
-align-items:center;
-justify-content:center;
-visibility:hidden;
-opacity:0;
-transition:.3s;
-z-index:9998;
-}
-
-.popup.show{
-visibility:visible;
-opacity:1;
-}
-
-.popup-box{
-background:#0f172a;
-padding:30px;
-border-radius:12px;
+.watch-btn{
+display:block;
 text-align:center;
-border:1px solid var(--border);
-}
-
-.popup-box a{
-background:#38bdf8;
-color:black;
-padding:8px 16px;
-border-radius:6px;
+padding:12px;
+border-radius:30px;
+background:linear-gradient(90deg,#2563eb,#1d4ed8);
+color:white;
 text-decoration:none;
-font-weight:bold;
+font-weight:800;
 }
 
-/* INSTAGRAM FLOAT */
+/* INSTAGRAM */
 
-.insta-float{
+.insta{
 position:fixed;
-bottom:20px;
 right:20px;
+bottom:20px;
 width:55px;
 height:55px;
 background:#e1306c;
@@ -245,11 +167,25 @@ border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-box-shadow:0 6px 20px rgba(0,0,0,.4);
+box-shadow:0 5px 20px rgba(0,0,0,.5);
 }
 
-.insta-float img{
+.insta img{
 width:26px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.live-card{
+min-width:150px;
+}
+
+.match-card img{
+height:120px;
+}
+
 }
 
 </style>
@@ -257,67 +193,31 @@ width:26px;
 
 <body>
 
-<header>CRICKCAST</header>
-
-<div class="match-banner">
-<img id="bannerImg" src="">
-<div class="banner-content">
-<div id="liveBadge" class="live-badge">LIVE</div>
-<div class="teams" id="teamNames">Match Loading...</div>
-<div class="score" id="scoreText"></div>
-</div>
+<div class="header">
+<div class="logo-pill">⚡ <span>CRICKCAST</span></div>
 </div>
 
-<div class="main">
-
-<div id="video-section">
-
-<video id="player" playsinline controls></video>
-
-<div id="language-bar">
-<span style="font-size:11px;color:#94a3b8">Audio:</span>
-<div id="lang-options"></div>
+<div class="player-box" id="playerBox">
+<video id="player" controls playsinline></video>
 </div>
+
+<div class="section">
+
+<div class="section-title">LIVE MATCHES</div>
+
+<div class="live-row" id="liveMatches"></div>
 
 </div>
 
-<div class="sidebar">
+<div class="section">
 
-<h3 style="font-size:12px;color:#64748b;text-transform:uppercase">
-Live & Upcoming
-</h3>
+<div class="section-title">UPCOMING MATCHES</div>
 
-<div id="match-list"></div>
+<div class="grid" id="upcomingMatches"></div>
 
 </div>
 
-</div>
-
-<!-- TELEGRAM POPUP -->
-
-<div id="telegramPopup" class="popup">
-<div class="popup-box">
-
-<h3>Join Our Telegram</h3>
-
-<p style="font-size:13px;color:#94a3b8">
-Get instant live links & updates
-</p>
-
-<a href="https://t.me/+BMRZLxqFMctjMjU1" target="_blank">
-Join Channel
-</a>
-
-<br><br>
-
-<span onclick="hidePopup()" style="cursor:pointer;color:#94a3b8">
-Maybe Later
-</span>
-
-</div>
-</div>
-
-<a href="https://www.instagram.com/crickcast.live" target="_blank" class="insta-float">
+<a href="https://www.instagram.com/crickcast.live" target="_blank" class="insta">
 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
 </a>
 
@@ -327,160 +227,122 @@ const workerUrl="https://sonyli.akcoder777.workers.dev"
 
 const video=document.getElementById("player")
 
-let plyrInstance=null
-let hlsInstance=null
+let hls
+let player
 
-function initPlayer(url){
+function playStream(url){
 
-if(hlsInstance)hlsInstance.destroy()
+document.getElementById("playerBox").style.display="block"
+
+if(hls) hls.destroy()
 
 if(Hls.isSupported()){
 
-hlsInstance=new Hls()
-hlsInstance.loadSource(url)
-hlsInstance.attachMedia(video)
+hls=new Hls()
 
-hlsInstance.on(Hls.Events.MANIFEST_PARSED,function(){
+hls.loadSource(url)
 
-if(!plyrInstance) plyrInstance=new Plyr(video)
+hls.attachMedia(video)
+
+hls.on(Hls.Events.MANIFEST_PARSED,function(){
+
+if(!player) player=new Plyr(video)
+
+video.play()
 
 })
 
 }else{
 
 video.src=url
-if(!plyrInstance) plyrInstance=new Plyr(video)
+
+if(!player) player=new Plyr(video)
 
 }
 
-}
-
-function setupLangs(streams){
-
-const bar=document.getElementById("lang-options")
-bar.innerHTML=""
-
-streams.forEach((s,i)=>{
-
-const btn=document.createElement("button")
-btn.className="lang-btn"
-btn.innerText=s.lang
-
-btn.onclick=()=>{
-
-document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"))
-
-btn.classList.add("active")
-
-initPlayer(s.url)
+window.scrollTo({top:0,behavior:"smooth"})
 
 }
 
-bar.appendChild(btn)
-
-if(i===0)btn.click()
-
-})
-
-}
-
-async function loadData(){
+async function loadMatches(){
 
 const res=await fetch(workerUrl+"?t="+Date.now())
-const json=await res.json()
 
-const matches=json.matches||json.data?.matches||[]
+const data=await res.json()
 
-const groups={}
+const liveContainer=document.getElementById("liveMatches")
 
-matches.forEach(m=>{
+const upcomingContainer=document.getElementById("upcomingMatches")
 
-let base=(m.match_name||m.event_name||"Match").split(" [")[0]
+liveContainer.innerHTML=""
+upcomingContainer.innerHTML=""
 
-let lang="LIVE"
+data.matches.forEach(m=>{
 
-if(m.match_name){
-const match=m.match_name.match(/\[([A-Z]{2,3})\]/)
-if(match) lang=match[1]
-}
+const stream=m.dai_url
 
-if(!groups[base]){
-groups[base]={
-name:base,
-event:m.event_name,
-thumb:m.src||"",
-streams:[],
-isLive:false
-}
-}
+const name=m.match_name || m.event_name
 
-if(m.dai_url && m.dai_url.includes("m3u8")){
-groups[base].streams.push({
-lang:lang,
-url:m.dai_url
-})
-groups[base].isLive=true
-}
+const banner=m.src || ""
 
-})
-
-const list=document.getElementById("match-list")
-list.innerHTML=""
-
-Object.values(groups).forEach((g,i)=>{
+if(stream){
 
 const card=document.createElement("div")
-card.className="card"
+
+card.className="live-card"
 
 card.innerHTML=`
-<img src="${g.thumb}" onerror="this.src='https://placehold.co/90x55'">
-<div class="card-info">
-<h4>${g.name}</h4>
-<p>${g.event||"Sports"}</p>
+
+<div style="position:relative">
+
+<img src="${banner}">
+
+<div class="live-tag">LIVE</div>
+
 </div>
+
 `
 
-card.onclick=()=>{
+card.onclick=()=>playStream(stream)
 
-document.querySelectorAll(".card").forEach(c=>c.classList.remove("active-card"))
+liveContainer.appendChild(card)
 
-card.classList.add("active-card")
+}else{
 
-document.getElementById("teamNames").innerText=g.name
-document.getElementById("bannerImg").src=g.thumb
+const card=document.createElement("div")
 
-document.getElementById("liveBadge").style.display=
-g.isLive?"inline-block":"none"
+card.className="match-card"
 
-if(g.streams.length){
-setupLangs(g.streams)
+card.innerHTML=`
+
+<img src="${banner}">
+
+<div class="card-body">
+
+<div class="tournament">${m.event_name||""}</div>
+
+<div class="match-title">${name}</div>
+
+<a class="watch-btn">Upcoming</a>
+
+</div>
+
+`
+
+upcomingContainer.appendChild(card)
+
 }
-
-}
-
-list.appendChild(card)
-
-if(i===0)card.click()
 
 })
 
 }
 
-function showPopup(){
-document.getElementById("telegramPopup").classList.add("show")
-}
+loadMatches()
 
-function hidePopup(){
-document.getElementById("telegramPopup").classList.remove("show")
-}
-
-setTimeout(showPopup,6000)
-
-window.onload=loadData
-
-setInterval(loadData,120000)
+setInterval(loadMatches,120000)
 
 </script>
 
 </body>
 </html>
+```
