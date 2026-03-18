@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
@@ -174,6 +175,64 @@ box-shadow:0 5px 20px rgba(0,0,0,.5);
 width:26px;
 }
 
+/* TELEGRAM POPUP */
+
+.telegram-popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%) scale(.9);
+width:320px;
+background:#0f172a;
+border:1px solid rgba(255,255,255,.1);
+border-radius:16px;
+padding:20px;
+text-align:center;
+box-shadow:0 10px 40px rgba(0,0,0,.6);
+z-index:9999;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+}
+
+.telegram-popup.show{
+opacity:1;
+pointer-events:auto;
+transform:translateX(-50%) scale(1);
+}
+
+.telegram-popup h2{
+margin-top:0;
+font-size:18px;
+}
+
+.telegram-popup p{
+font-size:13px;
+color:#94a3b8;
+}
+
+.popup-button{
+display:block;
+margin-top:10px;
+padding:10px;
+border-radius:30px;
+text-decoration:none;
+font-weight:700;
+}
+
+.join-btn{
+background:#229ED9;
+color:white;
+}
+
+.joined-btn{
+background:#1e293b;
+color:white;
+border:none;
+width:100%;
+cursor:pointer;
+}
+
 /* MOBILE */
 
 @media(max-width:700px){
@@ -220,6 +279,28 @@ height:120px;
 <a href="https://www.instagram.com/crickcast.live" target="_blank" class="insta">
 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
 </a>
+
+<!-- TELEGRAM POPUP -->
+
+<div id="telegramPopup" class="telegram-popup">
+
+<h2>
+<i class="fab fa-telegram"></i> Join Telegram Channel
+</h2>
+
+<p>
+Join our Telegram channel to get Live Match Links and Cricket Updates instantly.
+</p>
+
+<a href="https://t.me/+BMRZLxqFMctjMjU1" target="_blank" class="popup-button join-btn">
+Join Channel
+</a>
+
+<button onclick="closePopup()" class="popup-button joined-btn">
+Continue Watching
+</button>
+
+</div>
 
 <script>
 
@@ -280,53 +361,36 @@ upcomingContainer.innerHTML=""
 data.matches.forEach(m=>{
 
 const stream=m.dai_url
-
 const name=m.match_name || m.event_name
-
 const banner=m.src || ""
 
 if(stream){
 
 const card=document.createElement("div")
-
 card.className="live-card"
 
 card.innerHTML=`
-
 <div style="position:relative">
-
 <img src="${banner}">
-
 <div class="live-tag">LIVE</div>
-
 </div>
-
 `
 
 card.onclick=()=>playStream(stream)
-
 liveContainer.appendChild(card)
 
 }else{
 
 const card=document.createElement("div")
-
 card.className="match-card"
 
 card.innerHTML=`
-
 <img src="${banner}">
-
 <div class="card-body">
-
 <div class="tournament">${m.event_name||""}</div>
-
 <div class="match-title">${name}</div>
-
 <a class="watch-btn">Upcoming</a>
-
 </div>
-
 `
 
 upcomingContainer.appendChild(card)
@@ -337,6 +401,16 @@ upcomingContainer.appendChild(card)
 
 }
 
+function showPopup(){
+document.getElementById("telegramPopup").classList.add("show")
+}
+
+function closePopup(){
+document.getElementById("telegramPopup").classList.remove("show")
+}
+
+setTimeout(showPopup,5000)
+
 loadMatches()
 
 setInterval(loadMatches,120000)
@@ -345,4 +419,4 @@ setInterval(loadMatches,120000)
 
 </body>
 </html>
-```
+
